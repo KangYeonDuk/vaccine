@@ -20,7 +20,7 @@ Chrome 브라우저에서만 테스트를 하였습니다. 타 브라우저에�
 1. 아래의 소스를 복사하여 메모 어플 등을 활용하여 편집할 준비를 해줍니다.
     ~~~
     javascript:((my={
-        map: "https://m.place.naver.com/rest/vaccine?vaccineFilter=used&x=127.1054288&y=37.3594909&bounds=127.1022772%3B37.3577853%3B127.1085804%3B37.3611964",
+        map: "https://m.place.naver.com/rest/vaccine?vaccineFilter=used&x=127.0895253&y=37.3123918&bounds=126.994854%3B37.2694068%3B127.1841965%3B37.3553522",
         delay: 1000,
         timeout: 3000,
         choice: [
@@ -30,7 +30,7 @@ Chrome 브라우저에서만 테스트를 하였습니다. 타 브라우저에�
             "VEN00016",/*얀센*/
         ]
     }) => {
-    fetch('https://raw.githubusercontent.com/kimytsc/covid-rest-vaccine-macro/main/naver/macro.js')
+    fetch('https://raw.githubusercontent.com/KangYeonDuk/vaccine/main/macro.js')
     .then(res => res.text())
     .then(res => {
         var d=document
