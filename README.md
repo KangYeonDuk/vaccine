@@ -9,9 +9,9 @@ Chrome 브라우저에서만 테스트를 하였습니다. 타 브라우저에�
    `예약신청`이 뜬다면 이어서 진행하시면 됩니다.
 1. [예약 신청 페이지](https://v-search.nid.naver.com/reservation/standby?orgCd=41376633&sid=1085568538)에서 키보드의 `Command + Option + C`(Mac) 또는 `Control + Shift + C`(Windows, Linux, Chrome OS) 또는 `F12`를 눌러 `DevTools`창을 띄웁니다.
 1. `DevTools`창에서 `Console`탭을 누릅니다.
-1. [원하는 크기의 지도 좌표를 구하는 방법](https://github.com/kimytsc/covid-rest-vaccine-macro/blob/main/naver/macro.js#L17)을 참고하여 [내가 원하는 위치의 병원들](https://github.com/kimytsc/covid-rest-vaccine-macro/blob/main/naver/macro.js#L65)을 설정합니다.
-1. 특정 백신만을 예약하고 싶다면, [choice](https://github.com/kimytsc/covid-rest-vaccine-macro/blob/main/naver/macro.js#L58)의 주석(`//`)을 제거합니다.
-1. [설정한 소스](https://github.com/kimytsc/covid-rest-vaccine-macro/blob/main/naver/macro.js)를 복사한 후 `DevTools`창의 `Console`에 붙여넣고 실행시킵니다.
+1. [원하는 크기의 지도 좌표를 구하는 방법](https://github.com/KangYeonDuk/vaccine/blob/main/macro.js#L17)을 참고하여 [내가 원하는 위치의 병원들](https://github.com/KangYeonDuk/vaccine/blob/main/macro.js#L65)을 설정합니다.
+1. 특정 백신만을 예약하고 싶다면, [choice](https://github.com/KangYeonDuk/vaccine/blob/main/macro.js#L58)의 주석(`//`)을 제거합니다.
+1. [설정한 소스](https://github.com/KangYeonDuk/vaccine/blob/main/macro.js)를 복사한 후 `DevTools`창의 `Console`에 붙여넣고 실행시킵니다.
 1. `DevTools`창을 끕니다.
 1. 정말 간절히 원하면 스크립트가 나서서 도와준다.
 
