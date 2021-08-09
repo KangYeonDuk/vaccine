@@ -52,18 +52,18 @@
 
 var vaccineMacro = {
   data: {
-    delay: 1000, // milliseconds
+    delay: 2000, // milliseconds
     timeout: 3000,
     reservation: undefined,
     choice: [ // 선택한 백신이 없을 경우, 아무거나 고름
-      // "VEN00013", // 화이자
+       "VEN00013", // 화이자
       // "VEN00014", // 모더나
       // "VEN00015", // 아스트라제네카
       // "VEN00016", // 얀센
       // "VEN00017", // ????????
     ],
     //bounds: "https://m.place.naver.com/rest/vaccine?vaccineFilter=used&x=126.9015361&y=37.4858157&bounds=126.8770000%3B37.4560000%3B126.9260000%3B37.5170000",
-	bounds: "https://m.place.naver.com/rest/vaccine?vaccineFilter=used&x=127.0895253&y=37.3123918&bounds=126.994854%3B37.2694068%3B127.1841965%3B37.3553522",
+	bounds: "https://m.place.naver.com/rest/vaccine?vaccineFilter=used&x=127.0050017&y=37.2836433&bounds=126.9175403%3B37.2306309%3B127.0924632%3B37.3366183",
     // bounds: "126.8770000%3B37.4560000%3B126.9260000%3B37.5170000",
     // bounds: "126.8770000;37.4560000;126.9260000;37.5170000",
     // sampleOrganizations: [{
@@ -144,13 +144,14 @@ var vaccineMacro = {
       start = start + res.data.rests.businesses.items.length < res.data.rests.businesses.total ? start + res.data.rests.businesses.items.length : 0;
       return res;
     })
-    .then(res => res.data.rests.businesses.items.filter(item => item.vaccineQuantity && item.vaccineQuantity.totalQuantity > 0))
+    .then(res => res.data.rests.businesses.items.filter(item => item.vaccineQuantity && item.vaccineQuantity.totalQuantity > 0 && item.vaccineType=="화이자"))
     .then(res => vaccineMacro.data.sampleOrganizations || res)
+    //.then(console.log(res.shift()))
     .then(res => {
-      while (bussiness = res.shift()) {
-        setTimeout(vaccineMacro.standby, 1, bussiness);
-      }
-    })
+       while (bussiness = res.shift()) {
+         setTimeout(vaccineMacro.standby, 1, bussiness);
+       }
+     })
     .catch(e => {})
     .finally(() => {
       if (vaccineMacro.data.reservation) {
@@ -251,6 +252,7 @@ var vaccineMacro = {
     .then(res => res.json())
   },
   standby(bussiness) {
+    console.log(bussiness)
     fetch(`https://v-search.nid.naver.com/reservation/standby?orgCd=${ bussiness.vaccineQuantity.vaccineOrganizationCode }&sid=${ bussiness.id }`, {
       method: 'GET',
     })
@@ -258,11 +260,7 @@ var vaccineMacro = {
     .then(key => {
       var vaccines = bussiness.vaccineQuantity.list.map(vaccine => Object.assign(vaccine, {
           vaccineCode: ({
-            "화이자": "VEN00013",
-            "모더나": "VEN00014",
-            "아스트라제네카": "VEN00015",
-            "얀센": "VEN00016",
-            "???": "VEN00017"
+            "화이자": "VEN00013"
           })[vaccine.vaccineType]
         })
       ).filter(vaccine => vaccine.quantity > 0
