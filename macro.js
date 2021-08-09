@@ -144,7 +144,7 @@ var vaccineMacro = {
       start = start + res.data.rests.businesses.items.length < res.data.rests.businesses.total ? start + res.data.rests.businesses.items.length : 0;
       return res;
     })
-    .then(res => res.data.rests.businesses.items.filter(item => item.vaccineQuantity && item.vaccineQuantity.totalQuantity > 0 && item.vaccineType=="화이자"))
+    .then(res => res.data.rests.businesses.items.filter(item => item.vaccineQuantity && item.vaccineQuantity.totalQuantity > 0 ))
     .then(res => vaccineMacro.data.sampleOrganizations || res)
     //.then(console.log(res.shift()))
     .then(res => {
@@ -252,24 +252,49 @@ var vaccineMacro = {
     .then(res => res.json())
   },
   standby(bussiness) {
-    console.log(bussiness)
-    fetch(`https://v-search.nid.naver.com/reservation/standby?orgCd=${ bussiness.vaccineQuantity.vaccineOrganizationCode }&sid=${ bussiness.id }`, {
-      method: 'GET',
-    })
-    .then(res => res.url.split('key=')[1])
-    .then(key => {
-      var vaccines = bussiness.vaccineQuantity.list.map(vaccine => Object.assign(vaccine, {
-          vaccineCode: ({
-            "화이자": "VEN00013"
-          })[vaccine.vaccineType]
+    //console.log(bussiness.vaccineQuantity.list);
+
+    for (var itemList of bussiness.vaccineQuantity.list) {
+      console.log(itemList.vaccineType)
+
+      if (itemList.vaccineType == "화이자" && itemList.quantity > 0 ) {
+         fetch(`https://v-search.nid.naver.com/reservation/standby?orgCd=${ bussiness.vaccineQuantity.vaccineOrganizationCode }&sid=${ bussiness.id }`, {
+          method: 'GET',
         })
-      ).filter(vaccine => vaccine.quantity > 0
-        && (vaccineMacro.data.choice.length == 0 || vaccineMacro.data.choice.length && vaccineMacro.data.choice.indexOf(vaccine.vaccineCode) !== -1)
-      );
-      while(vaccine = vaccines.shift()) {
-        setTimeout(vaccineMacro.reservation, 1, bussiness, key, vaccine.vaccineCode)
+        .then(res => res.url.split('key=')[1])
+        .then(key => {
+          var vaccines = bussiness.vaccineQuantity.list.map(vaccine => Object.assign(vaccine, {
+              vaccineCode: ({
+                "화이자": "VEN00013"
+              })[vaccine.vaccineType]
+            })
+          ).filter(vaccine => vaccine.quantity > 0
+            && (vaccineMacro.data.choice.length == 0 || vaccineMacro.data.choice.length && vaccineMacro.data.choice.indexOf(vaccine.vaccineCode) !== -1)
+          );
+          while(vaccine = vaccines.shift()) {
+            setTimeout(vaccineMacro.reservation, 1, bussiness, key, vaccine.vaccineCode)
+          }
+        });
       }
-    });
+    }
+
+    // fetch(`https://v-search.nid.naver.com/reservation/standby?orgCd=${ bussiness.vaccineQuantity.vaccineOrganizationCode }&sid=${ bussiness.id }`, {
+    //   method: 'GET',
+    // })
+    // .then(res => res.url.split('key=')[1])
+    // .then(key => {
+    //   var vaccines = bussiness.vaccineQuantity.list.map(vaccine => Object.assign(vaccine, {
+    //       vaccineCode: ({
+    //         "화이자": "VEN00013"
+    //       })[vaccine.vaccineType]
+    //     })
+    //   ).filter(vaccine => vaccine.quantity > 0
+    //     && (vaccineMacro.data.choice.length == 0 || vaccineMacro.data.choice.length && vaccineMacro.data.choice.indexOf(vaccine.vaccineCode) !== -1)
+    //   );
+    //   while(vaccine = vaccines.shift()) {
+    //     setTimeout(vaccineMacro.reservation, 1, bussiness, key, vaccine.vaccineCode)
+    //   }
+    // });
   },
   reservation(bussiness, key, cd) {
     fetch(`/reservation/progress?key=${ key }&cd=${ cd }`, {
