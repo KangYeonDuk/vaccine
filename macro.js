@@ -52,7 +52,7 @@
 
 var vaccineMacro = {
   data: {
-    delay: 2000, // milliseconds
+    delay: 1000, // milliseconds
     timeout: 3000,
     reservation: undefined,
     choice: [ // 선택한 백신이 없을 경우, 아무거나 고름
@@ -255,7 +255,7 @@ var vaccineMacro = {
     //console.log(bussiness.vaccineQuantity.list);
 
     for (var itemList of bussiness.vaccineQuantity.list) {
-      console.log(itemList.vaccineType)
+     // console.log(itemList.vaccineType)
 
       if (itemList.vaccineType == "화이자" && itemList.quantity > 0 ) {
          fetch(`https://v-search.nid.naver.com/reservation/standby?orgCd=${ bussiness.vaccineQuantity.vaccineOrganizationCode }&sid=${ bussiness.id }`, {
